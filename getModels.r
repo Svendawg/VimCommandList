@@ -42,7 +42,7 @@ getLassoError <- function(X, Y, i)
 	X     <- X[-i,];
 	Y     <- Y[-i];
 	
-	input.lambda <- seq(0, 8000, by=1); 
+	input.lambda <- seq(0, 1500, by = 0.1); 
 	ans <- cv.glmnet(X, Y, lambda=input.lambda, standardize=FALSE);
 	sseVec <- rep(0,length(input.lambda)); # ith element gives the sse you get from using the ith value of lambda
 	for(i in 1:length(input.lambda)){
@@ -51,6 +51,7 @@ getLassoError <- function(X, Y, i)
 		prediction <- c(1,Xtest)%*%beta;
 		sseVec[i] <- (Ytest-prediction)^2;
 	}
+  plot(sseVec ~ ans$lambda)
 	return(sseVec);	
 }
 
