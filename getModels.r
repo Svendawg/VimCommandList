@@ -42,9 +42,7 @@ getLassoError <- function(X, Y, i)
 	X     <- X[-i,];
 	Y     <- Y[-i];
 	
-	lambda.high <- seq(0,1, by=0.01);  ##High res lambda exploration
-	lambda.low <- seq(1,10, by=0.01); ##Low res lambda exploration
-	input.lambda <- c(lambda.high,lambda.low); 
+	input.lambda <- seq(0, 8000, by=1); 
 	ans <- cv.glmnet(X, Y, lambda=input.lambda, standardize=FALSE);
 	sseVec <- rep(0,length(input.lambda)); # ith element gives the sse you get from using the ith value of lambda
 	for(i in 1:length(input.lambda)){
