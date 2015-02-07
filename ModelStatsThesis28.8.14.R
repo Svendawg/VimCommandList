@@ -16,4 +16,3 @@ testData <- data[-trainingDataIndices,];
 
 model.stepwise <- getStepwiseModel(trainingData);
 model.Lasso <- getLassoModel(trainingData);
- 

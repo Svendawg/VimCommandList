@@ -15,13 +15,7 @@ getLassoModel <- function(trainingData)
   Y <- trainingData[,Yindex];
   
   #Remove those with non-finite values
-  remove <- 1:112;
-  for (i in 1:112)
-  {
-    col <- X[ , i];
-    remove[i] <- is.finite(min(col)) && is.finite(max(col)) && !is.nan(col)
-  }
-  X <- X[ , remove];
+  X <- removeNonFiniteValues(X);
 
   error <- c();
   for(i in 1:dim(X)[1])
@@ -30,6 +24,8 @@ getLassoModel <- function(trainingData)
     error <- cbind(error, getLassoError(X, Y, i));
   }  
 }
+
+
 
 getLassoError <- function(X, Y, i)
 {
@@ -51,10 +47,8 @@ getLassoError <- function(X, Y, i)
 		prediction <- c(1,Xtest)%*%beta;
 		sseVec[i] <- (Ytest-prediction)^2;
 	}
-	return(sseVec);
-	
+	return(sseVec);	
 }
-
 
 pickLambda <- function(trainingData)
 {
@@ -67,4 +61,22 @@ pickLambda <- function(trainingData)
 		
 	}
 	return(errorVec);
+}
+
+#Remove the columns of X with non-finite values.
+removeNonFiniteValues <- function(X)
+{
+  
+  #Remove those with non-finite values
+  nCols <- dim(X)[2]
+  
+  remove <- rep(0, nCols);
+  for (i in 1:nCols)
+  {
+    col <- X[ , i];
+    remove[i] <- is.finite(min(col)) && is.finite(max(col)) && !is.nan(col)
+  }
+  X <- X[ , remove];
+
+  return(X);
 }
