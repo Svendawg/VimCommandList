@@ -16,16 +16,22 @@ getLassoModel <- function(trainingData)
   
   #Remove those with non-finite values
   X <- removeNonFiniteValues(X);
-
-  error <- c();
-  for(i in 1:dim(X)[1])
-  {
-    print(i);
-    error <- cbind(error, getLassoError(X, Y, i));
-  }  
+  errorVector <- getErrorVector(X);
 }
 
-
+# Returns a vector of errors. The ith element is the prediction error
+# from predicting the ith y value from a lasso model where we left that row
+# out of our design matrix.
+getErrorVector <- function(X)
+{
+  nRows <- dim(X)[1]
+  error <- rep(0, nRows);
+  for(i in 1:nRows)
+  {
+    print(i);
+    error[i] <- getLassoError(X, Y, i);
+  }
+}
 
 getLassoError <- function(X, Y, i)
 {
